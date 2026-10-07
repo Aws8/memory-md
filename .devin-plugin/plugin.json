@@ -1,0 +1,6 @@
+{
+  "name": "memory-md",
+  "version": "0.1.0",
+  "description": "Lint, graph and dry-run Dreaming for Agent Memory Repo — the open agent-memory standard.",
+  "skills": ["skills/"]
+}
