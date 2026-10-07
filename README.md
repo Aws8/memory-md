@@ -6,6 +6,8 @@
 
 ```sh
 pip install memory-md        # or: pipx install memory-md
+# straight from the repo until PyPI lands:
+# pip install "git+https://github.com/Aws8/memory-md"
 mem lint /path/to/memory     # validate against the spec
 ```
 
@@ -40,38 +42,46 @@ mem lint -v ~/memory-me
 - Launch deadline is 2026-10-15 [source: https://app.devin.ai/sessions/abc123; added: 2026-10-07]
 ```
 
-## Dogfooded on a live Devin memory drive
+## Try it on the included example
 
-Real output from `mem stats` on an actual agent memory drive (6 files, ~250 entries):
+`examples/memory-john/` ships a ready-made memory repo (the spec's own example layout) so you can see every command end-to-end:
 
 ```
-files:           6 (6 markdown, 0 other)
-entries:         249
-links:           7 (0 broken)
-with source:     37/249 entries
-with added date: 38/249 entries
+$ mem lint examples/memory-john
+0 error(s), 0 warning(s), 5 info
+
+$ mem stats examples/memory-john
+files:           6 (5 markdown, 1 other)
+entries:         17
+links:           8 (0 broken)
+with source:     8/17 entries
+with added date: 12/17 entries
+added range:     2026-08-20 -> 2026-10-02
 reachable:       6/6 files from MEMORY.md
+most linked-to:
+  projects/payments.md (4)
 ```
 
-`mem dream` found 10 real duplicate entries that had drifted across two notes — exactly the cleanup Dreaming is meant to do. `mem lint` reported `0 error(s), 0 warning(s), 213 info` — mostly missing `source:`/`added:` metadata that older entries predate.
+`mem dream` on a bigger drive surfaces what Dreaming would clean: near-duplicates that drifted across notes, entries older than `--stale-days`, same-subject contradictions — all advisory, nothing written.
 
-The link graph it renders (mermaid — GitHub renders this natively):
+The link graph (mermaid — GitHub renders it natively):
 
 ```mermaid
 graph LR
     MEMORY_md["**MEMORY.md**"]
-    aws_md["aws.md"]
-    lawsone_findings_md["lawsone-findings.md"]
-    lawsone_md["lawsone.md"]
-    nafis_md["nafis.md"]
-    shamla_wms_experiments_md["shamla-wms-experiments.md"]
-    lawsone_findings_md --> lawsone_md
-    lawsone_md --> lawsone_findings_md
-    MEMORY_md --> aws_md
-    MEMORY_md --> lawsone_md
-    MEMORY_md --> lawsone_findings_md
-    MEMORY_md --> shamla_wms_experiments_md
-    MEMORY_md --> nafis_md
+    metrics_autocomplete_keep_rate_sql["metrics/autocomplete_keep_rate.sql"]
+    projects_payments_md["projects/payments.md"]
+    projects_website_md["projects/website.md"]
+    team_structure_md["team_structure.md"]
+    using_datadog_mcp_md["using_datadog_mcp.md"]
+    MEMORY_md --> team_structure_md
+    MEMORY_md --> using_datadog_mcp_md
+    MEMORY_md --> projects_payments_md
+    MEMORY_md --> projects_website_md
+    MEMORY_md --> metrics_autocomplete_keep_rate_sql
+    projects_website_md --> projects_payments_md
+    team_structure_md --> projects_payments_md
+    using_datadog_mcp_md --> projects_payments_md
 ```
 
 ## Example: what lint catches
@@ -97,8 +107,8 @@ graph LR
 The repo ships `skills/memory-md/SKILL.md`, so agents that support the skills format can install and drive the CLI themselves:
 
 ```sh
-npx skills add Aws8/Opensourse --skill memory-md        # Claude Code, Cursor, …
-devin plugins install Aws8/Opensourse                   # Devin
+npx skills add Aws8/memory-md --skill memory-md        # Claude Code, Cursor, …
+devin plugins install Aws8/memory-md                   # Devin
 ```
 
 ## Why this exists

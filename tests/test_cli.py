@@ -67,10 +67,10 @@ def test_init_and_add(tmp_path, capsys):
     out = capsys.readouterr().out
     assert "0 error(s)" in out
     # add an entry
-    rc = main(["add", "projects/lawsone", "Lawsone ships weekly", "--source", "https://s/9", str(target)])
+    rc = main(["add", "projects/payments", "Payments ships on schedule", "--source", "https://s/9", str(target)])
     assert rc == 0
-    text = (target / "projects" / "lawsone.md").read_text()
-    assert "- Lawsone ships weekly [source: https://s/9; added: " in text
+    text = (target / "projects" / "payments.md").read_text()
+    assert "- Payments ships on schedule [source: https://s/9; added: " in text
     # add with index
     rc = main(["add", "projects/other", "second entry", "--index", str(target)])
     assert rc == 0

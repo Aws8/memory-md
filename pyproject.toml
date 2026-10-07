@@ -25,9 +25,9 @@ dependencies = []
 dev = ["pytest>=8"]
 
 [project.urls]
-Homepage = "https://github.com/Aws8/Opensourse"
+Homepage = "https://github.com/Aws8/memory-md"
 "Agent Memory Repo spec" = "https://cognition.com/agent-memory-repo"
-BugTracker = "https://github.com/Aws8/Opensourse/issues"
+BugTracker = "https://github.com/Aws8/memory-md/issues"
 
 [project.scripts]
 mem = "memory_md.cli:main"
